@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Form extends React.Component{
+class Signup extends React.Component{
     
     state = {
         name:"",
@@ -13,24 +13,12 @@ class Form extends React.Component{
         this.setState({[e.target.name]: e.target.value})
     }
 
-    
+
 
 
     handleSubmit = e => {
         e.preventDefault()
-        fetch('http://localhost:3000/users', {
-          method: "POST",
-          headers: {
-            'content-type' : 'application/json'
-          },
-          body: JSON.stringify( {user: this.state})
-        })
-        .then(r => r.json())
-        .then(data => {
-            localStorage.setItem("token", data.jwt)
-            this.props.handleLogin(data.user)
-        })
-
+        this.props.signupHandler(this.state)
         
     }
 
@@ -42,11 +30,11 @@ class Form extends React.Component{
                  <input type="text" placeholder="password" value={this.state.password} onChange={this.handleChange} name="password"/>
                 <input type="text" placeholder="name" value={this.state.name} onChange={this.handleChange} name="name"/>
                 <input type="text" placeholder="birthdate" value={this.state.birthdate} onChange={this.handleChange} name="birthdate"/>
-                <button>Log In</button>
+                <button>Sign Up</button>
             </form>
 
         )
     }
 }
 
-export default Form
+export default Signup

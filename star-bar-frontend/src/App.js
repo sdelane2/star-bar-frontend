@@ -1,38 +1,50 @@
 import logo from './logo.svg';
 import './App.css';
 import React, {useState, useEffect} from 'react'
-import Form from './Components/Form'
+import Signup from './Components/Signup'
+import Login from './Components/Login'
+import { render } from '@testing-library/react';
 
-function App() {
+class App extends React.Component {
 
-  const [user, setUser] = useState({})
+  state = {
+    user: null
+  }
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if(token){
-      fetch(`http://localhost:3000/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        setUser(data)
-        console.log(data)
-      })
-    }
-  }, [])
-
-  const handleLogin = (user) => {
-    setUser(user)
+  signupHandler = (userObj) => {
+  fetch('http://localhost:3000/users', {
+    method: "POST",
+    headers: {
+      'content-type' : 'application/json'
+      },
+      body: JSON.stringify({user: userObj})
+    })
+      .then(r => r.json())
+      .then(data => this.setState({ user: data.user}))
   }
   
-  
+  loginHandler = (userInfo)=>{
+    fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        accepts: 'application/json',
+        'content-type' : 'application/json'
+      },
+      body: JSON.stringify({user: userInfo})
+    })
+    .then(r => r.json())
+    .then(console.log)
+  }
+
+  render() {
     return (
       <div className="App">
-        <Form handleLogin={handleLogin}/>
+        <Signup signupHandler={this.signupHandler}/>
+        <Login loginHandler={this.loginHandler}/>
       </div>
-    );
+    )
+  }
+  
   
 }
 
