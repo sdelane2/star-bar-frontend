@@ -1,23 +1,39 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Form from './Components/Form'
 
-class App extends React.Component{
+function App() {
 
-  // componentDidMount(){
-  //   fetch('http://localhost:3000/horoscopes')
-  //   .then(r => r.json())
-  //   .then(data => console.log(data))
-  // }
+  const [user, setUser] = useState({})
 
-  render(){
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if(token){
+      fetch(`http://localhost:3000/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        setUser(data)
+        console.log(data)
+      })
+    }
+  }, [])
+
+  const handleLogin = (user) => {
+    setUser(user)
+  }
+  
+  
     return (
       <div className="App">
-        <Form />
+        <Form handleLogin={handleLogin}/>
       </div>
     );
-  }
+  
 }
 
 export default App;
