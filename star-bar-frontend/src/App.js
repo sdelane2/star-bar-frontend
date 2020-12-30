@@ -12,12 +12,13 @@ import HoroscopeContainer from './Containers/HoroscopeContainer'
 class App extends React.Component {
 
   state = {
-    user: null
+    user: null,
+    sign: ""
   }
 
   componentDidMount(){
     const token = localStorage.getItem('token')
-    if (token){
+    if (this.state.user && token){
       fetch('http://localhost:3000/profile', {
         method: "GET",
         headers: {Authorization: `Bearer ${token}`},
@@ -50,20 +51,21 @@ class App extends React.Component {
     })
     .then(r => r.json())
     .then(data => {
-      // console.log('token:', data.jwt)
-      // localStorage.setItem('token', data.jwt)
-      this.setState({user: data.user}, () => this.props.history.push('/horoscopes'))
+      console.log(data.user)
+      localStorage.setItem('token', data.jwt)
+      this.setState({user: data.user, sign: data.user.sign}, () => this.props.history.push('/horoscopes'))
     })
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="App">
         <Navbar />
         <Switch>
           <Route path='/signup' render={() => <Signup signupHandler={this.signupHandler}/>} />
           <Route path='/login' render={() => <Login loginHandler={this.loginHandler}/>} />
-          <Route path='/horoscopes' render={() => <HoroscopeContainer user={this.state.user} />}/>
+          <Route path='/horoscopes' render={() => <HoroscopeContainer user={this.state.user} sign={this.state.sign}/>}/>
         </Switch>
       </div>
     )
