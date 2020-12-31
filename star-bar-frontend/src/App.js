@@ -1,12 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import Signup from './Components/Signup'
 import Login from './Components/Login'
 import { render } from '@testing-library/react';
 import {Route, Switch, withRouter} from 'react-router-dom'
 import Navbar from './Components/Navbar'
 import HoroscopeContainer from './Containers/HoroscopeContainer'
+import FavoriteHoroscopeContainer from './Containers/FavoriteHoroscopeContainer';
 
 
 class App extends React.Component {
@@ -25,6 +26,7 @@ class App extends React.Component {
       })
       .then(r => r.json())
       .then(data => this.setState({ user: data.user}))
+      
     } 
   }
 
@@ -37,7 +39,7 @@ class App extends React.Component {
       body: JSON.stringify({user: userObj})
     })
       .then(r => r.json())
-      .then(data => this.setState({ user: data.user}))
+      .then(data => this.setState({ user: data.user, sign: data.user.sign}, () => this.props.history.push('/horoscopes')))
   }
   
   loginHandler = (userInfo)=>{
@@ -66,6 +68,7 @@ class App extends React.Component {
           <Route path='/signup' render={() => <Signup signupHandler={this.signupHandler}/>} />
           <Route path='/login' render={() => <Login loginHandler={this.loginHandler}/>} />
           <Route path='/horoscopes' render={() => <HoroscopeContainer user={this.state.user} sign={this.state.sign}/>}/>
+          <Route path='/favorites' render={() => <FavoriteHoroscopeContainer user={this.state.user} sign={this.state.sign}/>}/>
         </Switch>
       </div>
     )
