@@ -1,12 +1,14 @@
 import React from 'react'
 
 class Horoscope extends React.Component {
+  
 
     deleteClickHandler = () => {
         this.props.deleteFavorite(this.props.id)
     }
 
     render() {
+        console.log(this.props.horoscope)
         return(
             <>
             <h1>{this.props.sign}</h1>

@@ -1,97 +1,75 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import Horoscope from '../Components/Horoscope.js'
+import {connect} from 'react-redux'
+import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope} from '../Redux/actions'
 
 class HoroscopeContainer extends React.Component{
     state = {
-        horoscope: {},
         horoscope_id: ""
     }
 
     componentDidMount(){
-        fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign}&day=today`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({})
-        })
-        .then(r => r.json())
-        .then(json => this.setState({horoscope: json}, this.saveHoroscope))
+        if (this.props.user){
+            this.props.allHoroscopes()
+            this.todayHoroscope()
+            this.saveHoroscope()
+        }
     }
             
-    saveHoroscope = () => {
-        const token = localStorage.getItem('token')
-        fetch('http://localhost:3000/horoscopes', {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      Accepts: "application/json",
-                      Authorization: `Bearer ${token}`
-                  },
-                  body: JSON.stringify({
-                    date: this.state.horoscope.current_date,
-                    description: this.state.horoscope.description,
-                    lucky_number: parseInt(this.state.horoscope.lucky_number),
-                    lucky_color: this.state.horoscope.color,
-                    mood: this.state.horoscope.mood,
-                    compatibility: this.state.horoscope.compatibility
-                  })
-              }) 
-              .then(r => r.json())
-              .then(data => this.setState({horoscope_id: data})) 
+    saveHoroscope = () => { 
+        if (!this.props.horoscopes.find(horoscope => horoscope.date === this.props.horoscope.current_date && horoscope.description === this.props.horoscope.description)){
+            this.props.saveHoroscopeToDatabase(this.props.horoscope)
+            console.log("horoscope saved in db")
+        } else {
+            const id = this.props.horoscopes.find(horoscope => horoscope.date === this.props.horoscope.current_date && horoscope.description === this.props.horoscope.description).id 
+            console.log(id, "from save horoscope")
+            this.props.findIdFromDatabase(id)
+            console.log("horoscope already in db; not saved")
+        }
     }
 
     favoriteHoroscope = () => {
-        const token = localStorage.getItem('token')
-        fetch(`http://localhost:3000/favorite_horoscopes`, {
-            method: "POST",
-            headers: {
-                "content-type" : "application/json",
-                Accepts: "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({user_id: this.props.user.id, horoscope_id: this.state.horoscope_id.id})
-        })
-        .then(r => r.json())
-        .then(console.log)
+        if (!this.props.favoriteHoroscopes.find(horoscope => horoscope.current_date === this.props.horoscope.current_date && horoscope.description === this.props.horoscope.description)){
+            const token = localStorage.getItem('token')
+            fetch(`http://localhost:3000/favorite_horoscopes`, {
+                method: "POST",
+                headers: {
+                    "content-type" : "application/json",
+                    Accepts: "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({user_id: this.props.user.id, horoscope_id: this.props.horoscopeId})
+            })
+            .then(r => r.json())
+            .then(console.log)
+        }
     }
 
     todayHoroscope = () => {
-        fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign}&day=today`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({})
-        })
-        .then(r => r.json())
-        .then(json => this.setState({horoscope: json}, this.saveHoroscope))
+        this.props.todayHoroscope(this.props.user.sign)
+        console.log(this.props.horoscopes)
+        if (this.props.horoscopes && !this.props.horoscopes.find(h => h.current_date === this.props.horoscope.current_date && h.description === this.props.horoscope.description)){
+            this.saveHoroscope()
+        }
     }
     yesterdayHoroscope = () => {
-        fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign}&day=yesterday`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({})
-        })
-        .then(r => r.json())
-        .then(json => this.setState({horoscope: json}, this.saveHoroscope))
+        this.props.yesterdayHoroscope(this.props.user.sign)
+        this.saveHoroscope()
     }
     
     tomorrowHoroscope = () => {
-        fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign}&day=tomorrow`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({})
-        })
-        .then(r => r.json())
-        .then(json => this.setState({horoscope: json}, this.saveHoroscope))
+        this.props.tomorrowHoroscope(this.props.user.sign)
+        this.saveHoroscope()
     }
 
     render(){
-        console.log(this.props.user)
-        
+        console.log(this.props.horoscopes)
         return (
             <>
             {this.props.user ? 
             <>
-                < Horoscope horoscope={this.state.horoscope} tomorrowHoroscope={this.tomorrowHoroscope} yesterdayHoroscope={this.yesterdayHoroscope} todayHoroscope={this.todayHoroscope} favoriteHoroscope={this.favoriteHoroscope}/>
+                < Horoscope horoscope={this.props.horoscope} tomorrowHoroscope={this.tomorrowHoroscope} yesterdayHoroscope={this.yesterdayHoroscope} todayHoroscope={this.todayHoroscope} favoriteHoroscope={this.favoriteHoroscope}/>
             </>
             :
         
@@ -103,4 +81,25 @@ class HoroscopeContainer extends React.Component{
 
 }
 
-export default HoroscopeContainer
+const msp = state => {
+    return {
+        horoscope: state.horoscope,
+        user: state.user,
+        horoscopeId: state.horoscopeId,
+        horoscopes: state.horoscopes,
+        favoriteHoroscopes: state.favoriteHoroscopes
+    }
+}
+
+const mdp = dispatch => {
+    return {
+        todayHoroscope: (sign) => dispatch(getTodayHoroscope(sign)),
+        yesterdayHoroscope: (sign) => dispatch(getYesterdayHoroscope(sign)),
+        tomorrowHoroscope: (sign) => dispatch(getTomorrowHoroscope(sign)),
+        saveHoroscopeToDatabase: (horoscope) => dispatch(saveHoroscope(horoscope)),
+        findIdFromDatabase: (id) => dispatch(findId(id)),
+        allHoroscopes: () => dispatch(getAllHoroscopes())
+    }
+}
+
+export default connect(msp, mdp)(HoroscopeContainer)

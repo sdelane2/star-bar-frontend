@@ -23,7 +23,7 @@ class Signup extends React.Component{
     }
 
     render(){
-        console.log(this.state)
+        // console.log(this.state)
         return(
             <form onSubmit={this.handleSubmit}>
                  <input type="text" placeholder="username" value={this.state.username} onChange={this.handleChange} name="username"/>

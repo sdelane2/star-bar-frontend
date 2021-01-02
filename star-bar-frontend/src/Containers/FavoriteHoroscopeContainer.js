@@ -1,38 +1,21 @@
 import React from 'react'
 import Horoscope from '../Components/Horoscope.js'
+import {connect} from 'react-redux'
+import { deleteFavoriteHoroscope, getFavoriteHoroscopes } from '../Redux/actions.js'
 
 class FavoriteHoroscopeContainer extends React.Component   {
 
-    state = {
-        favoriteHoroscopes: []
-
-    }
 
     componentDidMount(){
-        const token = localStorage.getItem('token')
-        fetch('http://localhost:3000/favorite_horoscopes', {
-            method: "GET",
-            headers: {Authorization: `Bearer ${token}`},
-          })
-        .then(r => r.json())
-        .then(data => this.setState({favoriteHoroscopes: data.filter(d => d.user_id === this.props.user.id)}))
+        this.props.getFavorites(this.props.user.id)
     }
 
     deleteFavorite = (id) => {
-        const token = localStorage.getItem('token')
-        fetch(`http://localhost:3000/favorite_horoscopes/${id}`, {
-            method: "DELETE",
-            headers: {
-                'content-type' : 'application/json',
-                Authorization: `Bearer ${token}`
-            }
-        })
-        this.setState({favoriteHoroscopes: [...this.state.favoriteHoroscopes].filter(d => d.id !== id)})
+        this.props.deleteFavorite(id)
     }
 
     render() {
-        let favorites = this.state.favoriteHoroscopes.map(favorite => <Horoscope horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
-        console.log(this.state.favoriteHoroscopes)
+        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
         return (
             <>
             {favorites}
@@ -43,4 +26,18 @@ class FavoriteHoroscopeContainer extends React.Component   {
     }
 }
 
-export default FavoriteHoroscopeContainer
+const msp = state => {
+    return {
+        favoriteHoroscopes: state.favoriteHoroscopes,
+        user: state.user,
+    }
+}
+
+const mdp = dispatch => {
+    return {
+        getFavorites: (userId) => dispatch(getFavoriteHoroscopes(userId)),
+        deleteFavorite: (id) => dispatch(deleteFavoriteHoroscope(id))
+    }
+}
+
+export default connect(msp, mdp)(FavoriteHoroscopeContainer)
