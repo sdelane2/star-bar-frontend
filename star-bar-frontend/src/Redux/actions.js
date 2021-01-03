@@ -6,7 +6,6 @@ import {
   SIGNUP_USER,
   USER,
   ID,
-  ADD_FAVORITE,
   ALL_HOROSCOPES,
   FAVORITES,
   REMOVE_FAVORITE,
@@ -77,7 +76,7 @@ export function getAllHoroscopes(){
     }
 }
 
-export function getTodayHoroscope(sign) {
+export function getTodayHoroscope(sign, fn) {
   return function (dispatch) {
     fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=today`, {
       method: "POST",
@@ -86,12 +85,13 @@ export function getTodayHoroscope(sign) {
     })
       .then((r) => r.json())
       .then((data) => {
-        dispatch({ type: TODAY, payload: data });
+        dispatch({ type: TODAY, payload: data })
+        fn()
       });
   };
 }
 
-export function getYesterdayHoroscope(sign){
+export function getYesterdayHoroscope(sign, fn){
     return function(dispatch){
         fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=yesterday`, {
             method: "POST",
@@ -99,11 +99,14 @@ export function getYesterdayHoroscope(sign){
             body: JSON.stringify({})
         })
         .then(r => r.json())
-        .then(json => dispatch({type: YESTERDAY, payload: json}))
+        .then(json => {
+            dispatch({type: YESTERDAY, payload: json})
+            fn()
+        })
     }
 }
 
-export function getTomorrowHoroscope(sign){
+export function getTomorrowHoroscope(sign, fn){
     return function(dispatch){
         fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=tomorrow`, {
             method: "POST",
@@ -111,7 +114,10 @@ export function getTomorrowHoroscope(sign){
             body: JSON.stringify({})
         })
         .then(r => r.json())
-        .then(json => dispatch({type: TOMORROW, payload: json}))
+        .then(json => {
+            dispatch({type: TOMORROW, payload: json})
+            fn()
+        })
     }
 }
 

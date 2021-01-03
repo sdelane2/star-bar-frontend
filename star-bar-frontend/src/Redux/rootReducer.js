@@ -3,9 +3,9 @@ import {TODAY, YESTERDAY, TOMORROW, LOGIN_USER, SIGN, USER, SIGNUP_USER, ID, FAV
 
 const defaultState = {
     horoscopes: [],
-    horoscope: {},
+    apiHoroscope: {},
     favoriteHoroscopes: [],
-    user: null,
+    user: {},
     horoscopeId: null
     // sign: ""
 }
@@ -19,7 +19,7 @@ function horoscopesReducer(prevState = defaultState.horoscopes, action){
     }
 }
 
-function horoscopeReducer(prevState = defaultState.horoscope, action){
+function horoscopeReducer(prevState = defaultState.apiHoroscope, action){
     switch (action.type){
         case TODAY:
             return action.payload 
@@ -83,7 +83,7 @@ function horoscopeIdReducer(prevState = defaultState.horoscopeId, action){
 
 const rootReducer = combineReducers({
     horoscopes: horoscopesReducer,
-    horoscope: horoscopeReducer,
+    apiHoroscope: horoscopeReducer,
     favoriteHoroscopes: favoriteHoroscopesReducer,
     user: userReducer,
     horoscopeId: horoscopeIdReducer

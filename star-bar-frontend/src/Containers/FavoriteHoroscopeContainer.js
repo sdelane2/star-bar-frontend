@@ -15,6 +15,7 @@ class FavoriteHoroscopeContainer extends React.Component   {
     }
 
     render() {
+        // debugger
         let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
         return (
             <>
