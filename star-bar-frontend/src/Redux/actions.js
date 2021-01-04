@@ -9,7 +9,8 @@ import {
   ALL_HOROSCOPES,
   FAVORITES,
   REMOVE_FAVORITE,
-  FIND_ID
+  FIND_ID,
+  SIGN
 } from "./actionTypes";
 
 /**** USER ACTIONS ****/
@@ -39,6 +40,7 @@ export function startUserSession(){
       })
       .then(r => r.json())
       .then(data => {
+          console.log(data)
         dispatch({type: USER, payload: data.user})
         })
     }
@@ -177,5 +179,19 @@ export function deleteFavoriteHoroscope(id){
             }
         })
         dispatch({type: REMOVE_FAVORITE, payload: id})
+    }
+}
+
+/**** SIGN ACTIONS ****/
+
+export function getSign(sign){
+    return function(dispatch){
+        fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=today`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({}),
+        })
+        .then((r) => r.json())
+        .then((data) => dispatch({type: SIGN, payload: data}));
     }
 }

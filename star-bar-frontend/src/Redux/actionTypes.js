@@ -11,3 +11,5 @@ export const ID = 'HOROSCOPE_ID'
 export const FIND_ID = 'HOROSCOPE_ID_FROM_DB'
 export const FAVORITES = 'FAVORITES'
 export const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
+
+export const SIGN = 'CLICKED_SIGN'

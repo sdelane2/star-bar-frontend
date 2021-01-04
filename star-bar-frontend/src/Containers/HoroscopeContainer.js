@@ -18,6 +18,7 @@ class HoroscopeContainer extends React.Component{
             <>
             {this.props.user ? 
             <>
+                <h1>{this.props.user.sign}</h1>
                 <Horoscope container={true} horoscope={this.props.horoscope} />
             </>
             :

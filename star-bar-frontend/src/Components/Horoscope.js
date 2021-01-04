@@ -56,9 +56,9 @@ class Horoscope extends React.Component {
 
     render() {
         // console.log(this.props.favoriteHoroscopes)
+        // debugger
         return(
             <>
-            <h1>{this.props.user.sign}</h1>
             <h4>{this.props.horoscope.current_date}</h4>
             <h3>{this.props.horoscope.description}</h3>
             <p>Lucky Color: {this.props.horoscope.color}</p>

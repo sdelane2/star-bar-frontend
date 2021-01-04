@@ -5,9 +5,9 @@ const defaultState = {
     horoscopes: [],
     apiHoroscope: {},
     favoriteHoroscopes: [],
-    user: {},
-    horoscopeId: null
-    // sign: ""
+    user: null,
+    horoscopeId: null,
+    sign: null
 }
 
 function horoscopesReducer(prevState = defaultState.horoscopes, action){
@@ -70,22 +70,23 @@ function horoscopeIdReducer(prevState = defaultState.horoscopeId, action){
     }
 }
 
-// function signReducer(prevState = defaultState.sign, action){
-//     switch(action.type){
-//         case SIGN:
-//             console.log("sign", action.payload)
-//             return action.payload
-//         default: 
-//             return prevState
-//     }
+function signReducer(prevState = defaultState.sign, action){
+    switch(action.type){
+        case SIGN:
+            console.log("sign", action.payload)
+            return action.payload
+        default: 
+            return prevState
+    }
 
-// }
+}
 
 const rootReducer = combineReducers({
     horoscopes: horoscopesReducer,
     apiHoroscope: horoscopeReducer,
     favoriteHoroscopes: favoriteHoroscopesReducer,
     user: userReducer,
-    horoscopeId: horoscopeIdReducer
+    horoscopeId: horoscopeIdReducer,
+    sign: signReducer
 })
 export default rootReducer

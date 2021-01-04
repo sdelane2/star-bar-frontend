@@ -16,6 +16,9 @@ function Navbar(props){
             <NavLink to='/favorites'>
                 <li>Favorite Horoscopes</li>
             </NavLink>
+            <NavLink to='/all_horoscopes'>
+                <li>See other Horoscopes</li>
+            </NavLink>
 
         </ul>
     )
