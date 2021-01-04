@@ -4,6 +4,10 @@ import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getY
 
 class Horoscope extends React.Component {
 
+    state = {
+        isFavorite: false 
+    }
+
     componentDidMount(){
         if (this.props.user){
             this.props.todayHoroscope(this.props.user.sign, this.saveHoroscope)
@@ -77,12 +81,15 @@ class Horoscope extends React.Component {
             }
 
             {this.props.container ? 
-
-                <button onClick={this.favoriteHoroscope}>Save this horoscope to favorites</button> 
+                this.state.isFavorite ?
+                    
+                    null                  
+                        :
+                    <button onClick={()=> this.setState({isFavorite: true}, this.favoriteHoroscope)} >Save this horoscope to favorites</button> 
             : 
-            
-                <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
+            <button onClick={()=> this.setState({isFavorite: false}, this.deleteClickHandler)}>Delete this horoscope from favorites</button> 
             }
+
             </>
         )
     }
