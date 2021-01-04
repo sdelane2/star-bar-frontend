@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("https://unsplash.com/photos/uhjiu8FjnsQ/download");
+    background-size: cover;
+    font-family: Garamond;
+  }
+
+  
+  
+  .horoscope-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50rem;
+    padding: 2.5rem;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 0.625rem;
+    color: white;
+  }
+  
+  
+  

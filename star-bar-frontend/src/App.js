@@ -30,6 +30,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        
         <Navbar />
         <Switch>
           <Route path='/signup' render={() => <Signup signupHandler={this.signupHandler}/>} />
@@ -37,7 +38,9 @@ class App extends React.Component {
           <Route path='/horoscopes' component={HoroscopeContainer}/>
           <Route path='/favorites' component={FavoriteHoroscopeContainer}/>
         </Switch>
-      </div>
+        </div>
+    
+      
     )
   }
   
