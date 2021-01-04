@@ -1,12 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope} from '../Redux/actions'
+import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes} from '../Redux/actions'
 
 class Horoscope extends React.Component {
-
-    state = {
-        isFavorite: false 
-    }
 
     componentDidMount(){
         if (this.props.user){
@@ -51,7 +47,7 @@ class Horoscope extends React.Component {
             body: JSON.stringify({user_id: this.props.user.id, horoscope_id: this.props.horoscopeId})
         })
         .then(r => r.json())
-        .then(console.log)
+        .then(data => this.props.getFavorites(this.props.user.id))
     }
 
     deleteClickHandler = () => {
@@ -81,13 +77,13 @@ class Horoscope extends React.Component {
             }
 
             {this.props.container ? 
-                this.state.isFavorite ?
+                [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscopeId) ?
                     
                     null                  
                         :
-                    <button onClick={()=> this.setState({isFavorite: true}, this.favoriteHoroscope)} >Save this horoscope to favorites</button> 
+                    <button onClick={this.favoriteHoroscope} >Save this horoscope to favorites</button> 
             : 
-            <button onClick={()=> this.setState({isFavorite: false}, this.deleteClickHandler)}>Delete this horoscope from favorites</button> 
+            <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
             }
 
             </>
@@ -112,7 +108,8 @@ const mdp = dispatch => {
         tomorrowHoroscope: (sign, fn) => dispatch(getTomorrowHoroscope(sign, fn)),
         saveHoroscopeToDatabase: (horoscope) => dispatch(saveHoroscope(horoscope)),
         findIdFromDatabase: (id) => dispatch(findId(id)),
-        allHoroscopes: () => dispatch(getAllHoroscopes())
+        allHoroscopes: () => dispatch(getAllHoroscopes()),
+        getFavorites: (id) => dispatch(getFavoriteHoroscopes(id))
     }
 }
 export default connect(msp, mdp)(Horoscope)
