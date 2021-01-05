@@ -3,27 +3,26 @@ import '../styles/HoroscopeContainer.css'
 import {Redirect} from 'react-router-dom'
 import Horoscope from '../Components/Horoscope.js'
 import {connect} from 'react-redux'
-import { findId, getAllHoroscopes, saveHoroscope} from '../Redux/actions'
+import { findId, getAllHoroscopes, getAllSigns, saveHoroscope} from '../Redux/actions'
 
 class HoroscopeContainer extends React.Component{
 
     componentDidMount(){
         if (this.props.user){
+            this.props.getSigns()
             this.props.allHoroscopes()
         }
     }
 
     render(){
-        // console.log(this.props)
         return (
             <>
             {this.props.user ? 
             <>
-                {/* <h1>{this.props.user.sign}</h1> */}
             <i className="arrow left"></i>
             <div className="horoscope-box">
                 <div className="inputBox">
-                <Horoscope sign={this.props.user.sign} container={true} horoscope={this.props.horoscope} />
+                <Horoscope sign={this.props.sign} container={true} horoscope={this.props.horoscope} />
                 </div>
             </div>
             
@@ -44,7 +43,9 @@ const msp = state => {
         user: state.user,
         horoscopeId: state.horoscopeId,
         horoscopes: state.horoscopes,
-        favoriteHoroscopes: state.favoriteHoroscopes
+        favoriteHoroscopes: state.favoriteHoroscopes,
+        signRedux: state.signHoroscope,
+        signs: state.signsFromDatabase
     }
 }
 
@@ -52,7 +53,8 @@ const mdp = dispatch => {
     return {
         saveHoroscopeToDatabase: (horoscope) => dispatch(saveHoroscope(horoscope)),
         findIdFromDatabase: (id) => dispatch(findId(id)),
-        allHoroscopes: () => dispatch(getAllHoroscopes())
+        allHoroscopes: () => dispatch(getAllHoroscopes()),
+        getSigns: () => dispatch(getAllSigns())
     }
 }
 

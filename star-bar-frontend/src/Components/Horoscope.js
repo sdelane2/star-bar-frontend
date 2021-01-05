@@ -1,38 +1,45 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes} from '../Redux/actions'
+import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow} from '../Redux/actions'
 
 class Horoscope extends React.Component {
 
+
     componentDidMount(){
         if (this.props.user){
-            this.props.todayHoroscope(this.props.user.sign, this.saveHoroscope)
+            // this.props.getSignInfo(this.props.user.sign)
+            // this.props.todayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTodayInfo)
+            // debugger
+            this.props.todayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTodayInfo)
         }
     }
 
     saveHoroscope = () => {
         const id = [...this.props.horoscopes].find(h => h.current_date === this.props.apiHoroscope.current_date && h.description === this.props.apiHoroscope.description)
-        if (id){
-            console.log("horoscope already in db; not saved", id.id)
-            return this.props.findIdFromDatabase(id.id)
-        } else {
-            console.log("horoscope saved in db")
-            return this.props.saveHoroscopeToDatabase(this.props.apiHoroscope)
+
+        if (this.props.signs.length <= 0){
+            if (id){
+                console.log("horoscope already in db; not saved", id.id)
+                return this.props.findIdFromDatabase(id.id)
+            } else {
+                const signIdForDatabase = [...this.props.signs].find(sign => sign.name === this.props.sign).id
+    
+                console.log("horoscope saved in db")
+                return this.props.saveHoroscopeToDatabase(this.props.apiHoroscope, signIdForDatabase)
+            }
         }
     }
 
     yesterdayClickHandler = () => {
-        this.props.yesterdayHoroscope(this.props.user.sign, this.saveHoroscope)
+        this.props.yesterdayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignYesterdayInfo)
     }
   
     todayClickHandler = () => {
-        this.props.todayHoroscope(this.props.user.sign, this.saveHoroscope)
-        this.saveHoroscope()
+        this.props.todayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTodayInfo)
     }
 
     tomorrowClickHandler = () => {
-        this.props.tomorrowHoroscope(this.props.user.sign, this.saveHoroscope)
-        this.saveHoroscope()
+        this.props.tomorrowHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTomorrowInfo)
     }
 
     favoriteHoroscope = () => {
@@ -55,10 +62,10 @@ class Horoscope extends React.Component {
     }
 
     render() {
-        // console.log(this.props.favoriteHoroscopes)
-        // debugger
+        
         return(
             <>
+            <div style={{color: "white"}}>
             <h1>{this.props.sign}</h1>
             <h4>{this.props.horoscope.current_date}</h4>
             <h3>{this.props.horoscope.description}</h3>
@@ -66,7 +73,7 @@ class Horoscope extends React.Component {
             <p>Lucky Number: {this.props.horoscope.lucky_number}</p>
             <p>Compatibility: {this.props.horoscope.compatibility}</p>
             <p>Mood: {this.props.horoscope.mood}</p>
-
+            </div>
             {this.props.container ?
                 <>
                     <button onClick={this.yesterdayClickHandler}>Yesterday's horoscope</button>
@@ -98,19 +105,24 @@ const msp = state => {
         user: state.user,
         horoscopeId: state.horoscopeId,
         horoscopes: state.horoscopes,
-        favoriteHoroscopes: state.favoriteHoroscopes
+        favoriteHoroscopes: state.favoriteHoroscopes,
+        signRedux: state.signHoroscope,
+        signs: state.signsFromDatabase
     }
 }
 
 const mdp = dispatch => {
     return {
-        todayHoroscope: (sign, fn) => dispatch(getTodayHoroscope(sign, fn)),
-        yesterdayHoroscope: (sign, fn) => dispatch(getYesterdayHoroscope(sign, fn)),
-        tomorrowHoroscope: (sign, fn) => dispatch(getTomorrowHoroscope(sign, fn)),
-        saveHoroscopeToDatabase: (horoscope) => dispatch(saveHoroscope(horoscope)),
+        todayHoroscope: (sign, fn, signFn) => dispatch(getTodayHoroscope(sign, fn, signFn)),
+        yesterdayHoroscope: (sign, fn, signFn) => dispatch(getYesterdayHoroscope(sign, fn, signFn)),
+        tomorrowHoroscope: (sign, fn, signFn) => dispatch(getTomorrowHoroscope(sign, fn, signFn)),
+        saveHoroscopeToDatabase: (horoscope, signId) => dispatch(saveHoroscope(horoscope, signId)),
         findIdFromDatabase: (id) => dispatch(findId(id)),
         allHoroscopes: () => dispatch(getAllHoroscopes()),
-        getFavorites: (id) => dispatch(getFavoriteHoroscopes(id))
+        getFavorites: (id) => dispatch(getFavoriteHoroscopes(id)),
+        getSignTodayInfo: (sign) => dispatch(getSignToday(sign)),
+        getSignYesterdayInfo: (sign) => dispatch(getSignYesterday(sign)),
+        getSignTomorrowInfo: (sign) => dispatch(getSignTomorrow(sign))
     }
 }
 export default connect(msp, mdp)(Horoscope)

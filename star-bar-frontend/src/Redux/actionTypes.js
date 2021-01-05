@@ -12,4 +12,8 @@ export const FIND_ID = 'HOROSCOPE_ID_FROM_DB'
 export const FAVORITES = 'FAVORITES'
 export const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
 
-export const SIGN = 'CLICKED_SIGN'
+export const TODAY_SIGN = 'TODAY_AND_CLICKED_SIGN'
+export const YESTERDAY_SIGN = 'YESTERDAY_SIGN'
+export const TOMORROW_SIGN = 'TOMORROW_SIGN'
+export const ALL_SIGNS = 'ALL_SIGNS'
+

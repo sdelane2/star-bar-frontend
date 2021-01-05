@@ -10,6 +10,10 @@ import {
   FAVORITES,
   REMOVE_FAVORITE,
   FIND_ID,
+  TODAY_SIGN,
+  TOMORROW_SIGN,
+  YESTERDAY_SIGN,
+  ALL_SIGNS,
   SIGN
 } from "./actionTypes";
 
@@ -46,7 +50,7 @@ export function startUserSession(){
     }
 }
 
-export function loginUser(userInfo) {
+export function loginUser(userInfo, getSignInfo) {
   return function (dispatch) {
     fetch("http://localhost:3000/login", {
       method: "POST",
@@ -78,7 +82,7 @@ export function getAllHoroscopes(){
     }
 }
 
-export function getTodayHoroscope(sign, fn) {
+export function getTodayHoroscope(sign, fn, signFn) {
   return function (dispatch) {
     fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=today`, {
       method: "POST",
@@ -89,11 +93,12 @@ export function getTodayHoroscope(sign, fn) {
       .then((data) => {
         dispatch({ type: TODAY, payload: data })
         fn()
+        signFn(sign)
       });
   };
 }
 
-export function getYesterdayHoroscope(sign, fn){
+export function getYesterdayHoroscope(sign, fn, signFn){
     return function(dispatch){
         fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=yesterday`, {
             method: "POST",
@@ -104,11 +109,12 @@ export function getYesterdayHoroscope(sign, fn){
         .then(json => {
             dispatch({type: YESTERDAY, payload: json})
             fn()
+            signFn(sign)
         })
     }
 }
 
-export function getTomorrowHoroscope(sign, fn){
+export function getTomorrowHoroscope(sign, fn, signFn){
     return function(dispatch){
         fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=tomorrow`, {
             method: "POST",
@@ -119,11 +125,12 @@ export function getTomorrowHoroscope(sign, fn){
         .then(json => {
             dispatch({type: TOMORROW, payload: json})
             fn()
+            signFn(sign)
         })
     }
 }
 
-export function saveHoroscope(horoscope){
+export function saveHoroscope(horoscope, signId){
     const token = localStorage.getItem('token')
     return function(dispatch){
         fetch('http://localhost:3000/horoscopes', {
@@ -139,12 +146,13 @@ export function saveHoroscope(horoscope){
                     lucky_number: parseInt(horoscope.lucky_number),
                     lucky_color: horoscope.color,
                     mood: horoscope.mood,
-                    compatibility: horoscope.compatibility
+                    compatibility: horoscope.compatibility,
+                    sign_id: signId
                   })
               }) 
               .then(r => r.json())
               .then(data => {
-                //   console.log(data, "success")
+                  console.log(data, "success")
                   dispatch({type: ID, payload: data.id})
                 }) 
     }
@@ -184,7 +192,23 @@ export function deleteFavoriteHoroscope(id){
 
 /**** SIGN ACTIONS ****/
 
-export function getSign(sign){
+export function getAllSigns(){
+    const token = localStorage.getItem('token')
+    return function(dispatch){
+        fetch('http://localhost:3000/signs', {
+            method: "GET",
+            headers: {Authorization: `Bearer ${token}`},
+            })
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+            dispatch({type: ALL_SIGNS, payload: data})
+        })
+
+    }
+}
+
+export function getSignToday(sign){
     return function(dispatch){
         fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=today`, {
             method: "POST",
@@ -194,7 +218,38 @@ export function getSign(sign){
         .then((r) => r.json())
         .then((data) => {
             console.log(data)
-            dispatch({type: SIGN, payload: data})
+            dispatch({type: TODAY_SIGN, payload: data})
         });
     }
 }
+
+export function getSignYesterday(sign){
+    return function(dispatch){
+        fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=yesterday`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({}),
+        })
+        .then((r) => r.json())
+        .then((data) => {
+            console.log(data)
+            dispatch({type: YESTERDAY_SIGN, payload: data})
+        });
+    }
+}
+
+export function getSignTomorrow(sign){
+    return function(dispatch){
+        fetch(`https://aztro.sameerkumar.website?sign=${sign}&day=tomorrow`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({}),
+        })
+        .then((r) => r.json())
+        .then((data) => {
+            console.log(data)
+            dispatch({type: TOMORROW_SIGN, payload: data})
+        });
+    }
+}
+

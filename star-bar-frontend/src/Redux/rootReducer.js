@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {TODAY, YESTERDAY, TOMORROW, LOGIN_USER, SIGN, USER, SIGNUP_USER, ID, FAVORITES, ALL_HOROSCOPES, REMOVE_FAVORITE, FIND_ID} from './actionTypes'
+import {TODAY, YESTERDAY, TOMORROW, LOGIN_USER, USER, SIGNUP_USER, ID, FAVORITES, ALL_HOROSCOPES, REMOVE_FAVORITE, FIND_ID, TODAY_SIGN, YESTERDAY_SIGN, TOMORROW_SIGN, ALL_SIGNS} from './actionTypes'
 
 const defaultState = {
     horoscopes: [],
@@ -7,7 +7,8 @@ const defaultState = {
     favoriteHoroscopes: [],
     user: null,
     horoscopeId: null,
-    sign: {}
+    signHoroscope: {},
+    signsFromDatabase: []
 }
 
 function horoscopesReducer(prevState = defaultState.horoscopes, action){
@@ -70,10 +71,14 @@ function horoscopeIdReducer(prevState = defaultState.horoscopeId, action){
     }
 }
 
-function signReducer(prevState = defaultState.sign, action){
+function signHoroscopeReducer(prevState = defaultState.signHoroscope, action){
     switch(action.type){
-        case SIGN:
-            console.log("sign", action.payload)
+        case TODAY_SIGN:
+            // console.log("sign", action.payload)
+            return action.payload
+        case YESTERDAY_SIGN:
+            return action.payload 
+        case TOMORROW_SIGN:
             return action.payload
         default: 
             return prevState
@@ -81,12 +86,25 @@ function signReducer(prevState = defaultState.sign, action){
 
 }
 
+function signsReducer(prevState = defaultState.signsFromDatabase, action){
+    switch(action.type){
+        case ALL_SIGNS:
+            return action.payload
+        default:
+            return prevState
+    }
+}
+
+
+
+
 const rootReducer = combineReducers({
     horoscopes: horoscopesReducer,
     apiHoroscope: horoscopeReducer,
     favoriteHoroscopes: favoriteHoroscopesReducer,
     user: userReducer,
     horoscopeId: horoscopeIdReducer,
-    sign: signReducer
+    signHoroscope: signHoroscopeReducer,
+    signsFromDatabase: signsReducer
 })
 export default rootReducer

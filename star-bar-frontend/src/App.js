@@ -24,7 +24,7 @@ class App extends React.Component {
   }
   
   loginHandler = (userInfo)=>{
-    this.props.login(userInfo)
+    this.props.login(userInfo, this.props.getSignInfo)
     this.props.history.push("/horoscopes")
   }
 
@@ -37,7 +37,7 @@ class App extends React.Component {
           <Route path='/signup' render={() => <Signup signupHandler={this.signupHandler}/>} />
           <Route path='/login' render={() => <Login loginHandler={this.loginHandler}/>} />
           <Route path='/all_horoscopes' component={AllHoroscopesContainer} />
-          <Route path='/horoscopes' component={HoroscopeContainer}/>
+          <Route path='/horoscopes' render={() => <HoroscopeContainer sign={this.props.user.sign}/>}/>
           <Route path='/favorites' component={FavoriteHoroscopeContainer}/>
         </Switch>
         </div>
@@ -49,14 +49,19 @@ class App extends React.Component {
   
 }
 
+const msp = state => {
+  return {
+    user: state.user
+  }
+}
 
 const mdp = dispatch => {
   return {
-    login: (userInfo) => dispatch(loginUser(userInfo)),
+    login: (userInfo, fn) => dispatch(loginUser(userInfo, fn)),
     signup: (userObj) => dispatch(signUpUser(userObj)),
     setUser: () => dispatch(startUserSession())
   }
 }
 
-export default connect(null, mdp)(withRouter(App));
+export default connect(msp, mdp)(withRouter(App));
 

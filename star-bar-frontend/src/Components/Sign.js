@@ -1,29 +1,21 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { getSign } from '../Redux/actions';
+import { getSignToday } from '../Redux/actions';
 import Horoscope from './Horoscope';
 
 class Sign extends React.Component{
 
     state = {
-        horoscope: {},
         isClicked: false
     }
 
     clickHandler = (e) => {
-        // fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign.name}&day=today`, {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({}),
-        // })
-        // .then((r) => r.json())
-        // .then((data) => this.setState({horoscope: data, isClicked: !this.state.isClicked}));
         this.setState({isClicked: !this.state.isClicked})
-        this.props.getSignInfo(e.target.alt)
+        this.props.getSignTodayInfo(e.target.alt)
     }
 
     renderHoroscope = () => {
-        return <Horoscope sign={this.props.sign.name} horoscope={this.props.signRedux}/>
+        return <Horoscope container={true} sign={this.props.sign.name} horoscope={this.props.signRedux}/>
     }
 
     render(){
@@ -46,13 +38,13 @@ class Sign extends React.Component{
 
 const msp = state => {
     return {
-        signRedux: state.sign
+        signRedux: state.signHoroscope
     }
 }
 
 const mdp = dispatch => {
     return {
-        getSignInfo: (sign) => dispatch(getSign(sign))
+        getSignTodayInfo: (sign) => dispatch(getSignToday(sign))
     }
 }
 

@@ -14,9 +14,9 @@ class FavoriteHoroscopeContainer extends React.Component   {
         this.props.deleteFavorite(id)
     }
 
+
     render() {
-        // debugger
-        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={this.props.user.sign} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
+        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
         return (
             <>
             {favorites}
@@ -31,6 +31,7 @@ const msp = state => {
     return {
         favoriteHoroscopes: state.favoriteHoroscopes,
         user: state.user,
+        signs: state.signsFromDatabase
     }
 }
 
