@@ -19,11 +19,11 @@ class HoroscopeContainer extends React.Component{
             <>
             {this.props.user ? 
             <>
-                <h1>{this.props.user.sign}</h1>
-            <i class="arrow left"></i>
-            <div class="horoscope-box">
-                <div class="inputBox">
-                <Horoscope container={true} horoscope={this.props.horoscope} />
+                {/* <h1>{this.props.user.sign}</h1> */}
+            <i className="arrow left"></i>
+            <div className="horoscope-box">
+                <div className="inputBox">
+                <Horoscope sign={this.props.user.sign} container={true} horoscope={this.props.horoscope} />
                 </div>
             </div>
             

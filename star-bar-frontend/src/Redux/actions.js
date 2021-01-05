@@ -144,7 +144,7 @@ export function saveHoroscope(horoscope){
               }) 
               .then(r => r.json())
               .then(data => {
-                  console.log(data, "success")
+                //   console.log(data, "success")
                   dispatch({type: ID, payload: data.id})
                 }) 
     }
@@ -192,6 +192,9 @@ export function getSign(sign){
             body: JSON.stringify({}),
         })
         .then((r) => r.json())
-        .then((data) => dispatch({type: SIGN, payload: data}));
+        .then((data) => {
+            console.log(data)
+            dispatch({type: SIGN, payload: data})
+        });
     }
 }

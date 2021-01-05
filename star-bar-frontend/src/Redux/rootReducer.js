@@ -7,7 +7,7 @@ const defaultState = {
     favoriteHoroscopes: [],
     user: null,
     horoscopeId: null,
-    sign: null
+    sign: {}
 }
 
 function horoscopesReducer(prevState = defaultState.horoscopes, action){

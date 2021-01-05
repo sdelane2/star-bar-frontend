@@ -11,19 +11,19 @@ class Sign extends React.Component{
     }
 
     clickHandler = (e) => {
-        fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign.name}&day=today`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({}),
-        })
-        .then((r) => r.json())
-        .then((data) => this.setState({horoscope: data, isClicked: !this.state.isClicked}));
-        
-        // this.props.getSignInfo(e.target.alt)
+        // fetch(`https://aztro.sameerkumar.website?sign=${this.props.sign.name}&day=today`, {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({}),
+        // })
+        // .then((r) => r.json())
+        // .then((data) => this.setState({horoscope: data, isClicked: !this.state.isClicked}));
+        this.setState({isClicked: !this.state.isClicked})
+        this.props.getSignInfo(e.target.alt)
     }
 
     renderHoroscope = () => {
-        return <Horoscope horoscope={this.state.horoscope}/>
+        return <Horoscope sign={this.props.sign.name} horoscope={this.props.signRedux}/>
     }
 
     render(){
@@ -44,16 +44,16 @@ class Sign extends React.Component{
     }
 }
 
-// const msp = state => {
-//     return {
-//         sign: state.sign
-//     }
-// }
+const msp = state => {
+    return {
+        signRedux: state.sign
+    }
+}
 
-// const mdp = dispatch => {
-//     return {
-//         getSignInfo: (sign) => dispatch(getSign(sign))
-//     }
-// }
+const mdp = dispatch => {
+    return {
+        getSignInfo: (sign) => dispatch(getSign(sign))
+    }
+}
 
-export default Sign
+export default connect(msp, mdp)(Sign)
