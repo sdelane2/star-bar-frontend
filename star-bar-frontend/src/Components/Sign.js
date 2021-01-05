@@ -2,12 +2,24 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { getSignToday } from '../Redux/actions';
 import Horoscope from './Horoscope';
+import {
+    Modal,
+    Button
+   } from 'semantic-ui-react'
 
 class Sign extends React.Component{
 
     state = {
-        isClicked: false
+        horoscope: {},
+        isClicked: false,
+        isOpen: false
     }
+
+    toggleModal = () => {
+        this.setState({
+          isOpen: !this.state.isOpen
+        });
+      }
 
     clickHandler = (e) => {
         this.setState({isClicked: !this.state.isClicked})
@@ -21,7 +33,14 @@ class Sign extends React.Component{
     render(){
         return(
             <>
+                <div class="column">
                 <img style={{maxWidth: "500px", height: "100px"}} key={this.props.sign.id} alt={this.props.sign.name} src={this.props.sign.image} onClick={this.clickHandler}/>
+                <button onClick={this.toggleModal}>modal</button>
+                <Modal trigger={this.state.isOpen}
+                onClose={this.toggleModal}>
+                testing
+                </Modal>
+                </div>
                 {this.state.isClicked ?
                 
                     this.renderHoroscope()
