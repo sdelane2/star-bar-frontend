@@ -15,7 +15,7 @@ class AllHoroscopesContainer extends React.Component{
     render(){
         console.log(this.props.signs)
         return(
-            <div class='ui three column doubling stackable grid container'>
+            <div className='ui three column doubling stackable grid container'>
                 {this.renderSignPics()}
             </div>    
         )

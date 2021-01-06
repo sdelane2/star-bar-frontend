@@ -33,22 +33,22 @@ class Sign extends React.Component{
     render(){
         return(
             <>
-                <div class="column">
+                <div className="column">
                 <img style={{maxWidth: "500px", height: "100px"}} key={this.props.sign.id} alt={this.props.sign.name} src={this.props.sign.image} onClick={this.clickHandler}/>
-                <button onClick={this.toggleModal}>modal</button>
-                <Modal trigger={this.state.isOpen}
+                {/* <button onClick={this.toggleModal}>modal</button> */}
+                <Modal onOpen={this.toggleModal} trigger={<Button>modal</Button>}
                 onClose={this.toggleModal}>
-                testing
+                {this.renderHoroscope()}
+                {/* testing */}
                 </Modal>
                 </div>
-                {this.state.isClicked ?
+                {/* {this.state.isClicked ?
                 
-                    this.renderHoroscope()
                 
                 :
                     null
 
-                }
+                } */}
             </>
             )
 

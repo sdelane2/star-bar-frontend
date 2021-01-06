@@ -60,7 +60,7 @@ class Horoscope extends React.Component {
         
         return(
             <>
-            <div style={{color: "white"}}>
+            <div>
             <h1>{this.props.sign}</h1>
             <h4>{this.props.horoscope.current_date}</h4>
             <h3>{this.props.horoscope.description}</h3>
