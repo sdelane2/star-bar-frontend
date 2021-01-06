@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { Button, Segment } from 'semantic-ui-react'
 import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow, getAllSigns} from '../Redux/actions'
 
 class Horoscope extends React.Component {
@@ -59,8 +60,8 @@ class Horoscope extends React.Component {
     render() {
         
         return(
-            <>
-            <div>
+            <Segment padded>
+            <div style={{color: 'white', textAlign: 'center'}}>
             <h1>{this.props.sign}</h1>
             <h4>{this.props.horoscope.current_date}</h4>
             <h3>{this.props.horoscope.description}</h3>
@@ -68,13 +69,15 @@ class Horoscope extends React.Component {
             <p>Lucky Number: {this.props.horoscope.lucky_number}</p>
             <p>Compatibility: {this.props.horoscope.compatibility}</p>
             <p>Mood: {this.props.horoscope.mood}</p>
+            <br/>
             </div>
             {this.props.container ?
-                <>
-                    <button onClick={this.yesterdayClickHandler}>Yesterday's horoscope</button>
-                    <button onClick={this.todayClickHandler}>Today's horoscope</button>
-                    <button onClick={this.tomorrowClickHandler}>Tomorrow's horoscope</button>
-                </>
+                <div style={{textAlign: 'center'}}>
+                    <Button onClick={this.yesterdayClickHandler}>Yesterday's horoscope</Button>
+                    <Button onClick={this.todayClickHandler}>Today's horoscope</Button>
+                    <Button onClick={this.tomorrowClickHandler}>Tomorrow's horoscope</Button>
+                <br/><br/>
+                </div>
             :
                 null
             }
@@ -84,12 +87,14 @@ class Horoscope extends React.Component {
                     
                     null                  
                         :
-                    <button onClick={this.favoriteHoroscope} >Save this horoscope to favorites</button> 
+                    <div style={{textAlign: 'center'}}>
+                        <Button onClick={this.favoriteHoroscope} >Save this horoscope to favorites</Button> 
+                    </div>
             : 
             <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
             }
 
-            </>
+            </Segment>
         )
     }
 }
