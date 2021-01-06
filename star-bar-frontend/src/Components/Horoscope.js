@@ -1,23 +1,19 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow} from '../Redux/actions'
+import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow, getAllSigns} from '../Redux/actions'
 
 class Horoscope extends React.Component {
 
 
     componentDidMount(){
         if (this.props.user){
-            // this.props.getSignInfo(this.props.user.sign)
-            // this.props.todayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTodayInfo)
-            // debugger
+            this.props.getSigns()
             this.props.todayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTodayInfo)
         }
     }
 
     saveHoroscope = () => {
         const id = [...this.props.horoscopes].find(h => h.current_date === this.props.apiHoroscope.current_date && h.description === this.props.apiHoroscope.description)
-
-        if (this.props.signs.length <= 0){
             if (id){
                 console.log("horoscope already in db; not saved", id.id)
                 return this.props.findIdFromDatabase(id.id)
@@ -27,7 +23,6 @@ class Horoscope extends React.Component {
                 console.log("horoscope saved in db")
                 return this.props.saveHoroscopeToDatabase(this.props.apiHoroscope, signIdForDatabase)
             }
-        }
     }
 
     yesterdayClickHandler = () => {
@@ -122,7 +117,8 @@ const mdp = dispatch => {
         getFavorites: (id) => dispatch(getFavoriteHoroscopes(id)),
         getSignTodayInfo: (sign) => dispatch(getSignToday(sign)),
         getSignYesterdayInfo: (sign) => dispatch(getSignYesterday(sign)),
-        getSignTomorrowInfo: (sign) => dispatch(getSignTomorrow(sign))
+        getSignTomorrowInfo: (sign) => dispatch(getSignTomorrow(sign)),
+        getSigns: () => dispatch(getAllSigns())
     }
 }
 export default connect(msp, mdp)(Horoscope)
