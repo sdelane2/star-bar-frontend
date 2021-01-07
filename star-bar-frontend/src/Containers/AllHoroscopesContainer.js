@@ -9,7 +9,7 @@ class AllHoroscopesContainer extends React.Component{
 
 
     renderSignPics = () => {
-        return [...this.props.signs].map(sign => <><Sign key={sign.id} sign={sign}/><br/></>)
+        return [...this.props.signs].map(sign => <><Sign container={true} key={sign.id} sign={sign}/><br/></>)
     }
 
     render(){

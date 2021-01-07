@@ -1,14 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { Icon } from 'semantic-ui-react'
 import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow, getAllSigns} from '../Redux/actions'
-import { Button, Icon, Card } from 'semantic-ui-react'
+import { Button, Icon, Card, Segment } from 'semantic-ui-react'
 class Horoscope extends React.Component {
 
 
     componentDidMount(){
         if (this.props.user){
             this.props.getSigns()
+            this.props.getFavorites(this.props.user.id)
             this.props.todayHoroscope(this.props.sign, this.saveHoroscope, this.props.getSignTodayInfo)
         }
     }
@@ -19,7 +19,6 @@ class Horoscope extends React.Component {
                 console.log("horoscope already in db; not saved", id.id)
                 return this.props.findIdFromDatabase(id.id)
             } else {
-                
                 const signIdForDatabase = [...this.props.signs].find(sign => sign.name === this.props.sign).id
     
                 console.log("horoscope saved in db")
@@ -59,10 +58,10 @@ class Horoscope extends React.Component {
     }
 
     render() {
-        
+        // debugger
+        console.log(this.props.container)
         return(
             <>
-
             {this.props.container ? 
                 [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscopeId) ?
                     
@@ -100,7 +99,6 @@ class Horoscope extends React.Component {
             }
 
             
-
             </>
         )
     }

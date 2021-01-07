@@ -18,16 +18,16 @@ class FavoriteHoroscopeContainer extends React.Component   {
 
 
     render() {
-        let favorites = this.props.favoriteHoroscopes.map(favorite => <> <Grid.Row><Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/></Grid.Row></>)
+        let favorites = this.props.favoriteHoroscopes.map(favorite => <> <Grid.Row><Segment><Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/></Segment></Grid.Row></>)
         return (
             <>
         
             <Grid verticalAlign='middle' rows={this.props.favoriteHoroscopes.length} centered>
-            <Segment secondary color={"black"}>
             <Grid.Column>
+            
                 {favorites}
+        
             </Grid.Column>
-            </Segment>
             </Grid>
             </>
             
