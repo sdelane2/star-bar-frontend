@@ -2,6 +2,8 @@ import React from 'react'
 import Horoscope from '../Components/Horoscope.js'
 import {connect} from 'react-redux'
 import { deleteFavoriteHoroscope, getFavoriteHoroscopes } from '../Redux/actions.js'
+import { Grid, Segment } from 'semantic-ui-react'
+
 
 class FavoriteHoroscopeContainer extends React.Component   {
 
@@ -16,10 +18,17 @@ class FavoriteHoroscopeContainer extends React.Component   {
 
 
     render() {
-        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
+        let favorites = this.props.favoriteHoroscopes.map(favorite => <> <Grid.Row><Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/></Grid.Row></>)
         return (
             <>
-            {favorites}
+        
+            <Grid verticalAlign='middle' rows={this.props.favoriteHoroscopes.length} centered>
+            <Segment secondary color={"black"}>
+            <Grid.Column>
+                {favorites}
+            </Grid.Column>
+            </Segment>
+            </Grid>
             </>
             
     

@@ -4,9 +4,15 @@ import {Redirect} from 'react-router-dom'
 import Horoscope from '../Components/Horoscope.js'
 import {connect} from 'react-redux'
 import { findId, getAllHoroscopes, getAllSigns, saveHoroscope} from '../Redux/actions'
+import { Transition, Grid } from 'semantic-ui-react'
 
 class HoroscopeContainer extends React.Component{
 
+    state = {
+        yesterday: [],
+        today: [],
+        tomorrow: []
+    }
     componentDidMount(){
         if (this.props.user){
             this.props.getSigns()
@@ -14,17 +20,22 @@ class HoroscopeContainer extends React.Component{
         }
     }
 
+    
+
     render(){
         return (
             <>
             {this.props.user ? 
             <>
-            <i className="arrow left"></i>
+            <Transition duration={500}>
+
             <div className="horoscope-box">
                 <div className="inputBox">
                 <Horoscope sign={this.props.sign} container={true} horoscope={this.props.horoscope} />
                 </div>
-            </div>
+                </div>
+                </Transition>
+            
             
             </>
             :

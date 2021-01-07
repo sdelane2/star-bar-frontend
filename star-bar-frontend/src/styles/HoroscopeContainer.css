@@ -14,5 +14,19 @@
     color: white;
   }
   
+  .favorite {
+    float: right;
+  }
+
+  .flex-container {
+    display: table-row;
+    align-items: center;
+    grid-template-rows: auto;
+  }
+
+  .flex-item {
+    
+  }
+
   
   

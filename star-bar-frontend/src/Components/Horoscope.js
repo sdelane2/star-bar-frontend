@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow, getAllSigns} from '../Redux/actions'
-
+import { Button, Icon, Card } from 'semantic-ui-react'
 class Horoscope extends React.Component {
 
 
@@ -60,6 +60,22 @@ class Horoscope extends React.Component {
         
         return(
             <>
+
+            {this.props.container ? 
+                [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscopeId) ?
+                    
+                    null                  
+                        :
+                    <Icon name={"favorite"} className={"favorite"} corner={"top right"} size={"large"} onClick={this.favoriteHoroscope} ></Icon> 
+            : 
+            <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
+            }
+           
+            <br></br>
+            <br></br>
+            <br></br>
+        
+
             <div style={{color: "white"}}>
             <h1>{this.props.sign}</h1>
             <h4>{this.props.horoscope.current_date}</h4>
@@ -71,23 +87,15 @@ class Horoscope extends React.Component {
             </div>
             {this.props.container ?
                 <>
-                    <button onClick={this.yesterdayClickHandler}>Yesterday's horoscope</button>
-                    <button onClick={this.todayClickHandler}>Today's horoscope</button>
-                    <button onClick={this.tomorrowClickHandler}>Tomorrow's horoscope</button>
+                    <Icon name={"caret left"} size={"big"} onClick={this.yesterdayClickHandler}></Icon>
+                    <Icon name={"caret down"} size={"big"} onClick={this.todayClickHandler}></Icon>
+                    <Icon name={"caret right"} size={"big"} onClick={this.tomorrowClickHandler}></Icon><br></br>
                 </>
             :
                 null
             }
 
-            {this.props.container ? 
-                [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscopeId) ?
-                    
-                    null                  
-                        :
-                    <button onClick={this.favoriteHoroscope} >Save this horoscope to favorites</button> 
-            : 
-            <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
-            }
+            
 
             </>
         )
