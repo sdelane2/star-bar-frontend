@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { Button, Segment } from 'semantic-ui-react'
-import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow, getAllSigns} from '../Redux/actions'
+import { Button, Icon, Segment } from 'semantic-ui-react'
+import { findId, getAllHoroscopes, getTodayHoroscope, getTomorrowHoroscope, getYesterdayHoroscope, saveHoroscope, getFavoriteHoroscopes, getSignToday, getSignYesterday, getSignTomorrow, getAllSigns, deleteFavoriteHoroscope} from '../Containers/Redux/actions'
 
 class Horoscope extends React.Component {
 
@@ -39,6 +39,7 @@ class Horoscope extends React.Component {
     }
 
     favoriteHoroscope = () => {
+        
         const token = localStorage.getItem('token')
         fetch(`http://localhost:3000/favorite_horoscopes`, {
             method: "POST",
@@ -53,12 +54,13 @@ class Horoscope extends React.Component {
         .then(data => this.props.getFavorites(this.props.user.id))
     }
 
-    deleteClickHandler = () => {
-        this.props.deleteFavorite(this.props.id)
+    deleteClickHandler = (e) => {
+        debugger
+        const id = [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === parseInt(e.target.id)).id
+        this.props.deleteFavorite(id)
     }
 
     render() {
-        
         return(
             <Segment padded>
             <div style={{color: 'white', textAlign: 'center'}}>
@@ -82,17 +84,22 @@ class Horoscope extends React.Component {
                 null
             }
 
-            {this.props.container ? 
-                [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscopeId) ?
-                    
-                    null                  
+            {/* {this.props.container ?  */}
+                {[...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscopeId) || [...this.props.favoriteHoroscopes].find(h => h.horoscope.id === this.props.horoscope.id) ?
+                    <div style={{textAlign: 'center'}}>
+                        <Icon id={this.props.horoscope.id}onClick={this.deleteClickHandler} size='big' name='heart' color='red'></Icon>                 
+                    </div>
                         :
                     <div style={{textAlign: 'center'}}>
-                        <Button onClick={this.favoriteHoroscope} >Save this horoscope to favorites</Button> 
+                        <Icon id={this.props.horoscope.id} size='big' name='heart outline' onClick={this.favoriteHoroscope}color='red'></Icon>
+                        {/* <Button color='red' onClick={this.favoriteHoroscope} >Save this horoscope to favorites</Button>  */}
                     </div>
-            : 
-            <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
-            }
+                }
+            {/* : 
+            <Icon onClick={this.deleteClickHandler} size='big' name='heart' color='red'></Icon>
+
+            // <Button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</Button> 
+            } */}
 
             </Segment>
         )
@@ -123,7 +130,8 @@ const mdp = dispatch => {
         getSignTodayInfo: (sign) => dispatch(getSignToday(sign)),
         getSignYesterdayInfo: (sign) => dispatch(getSignYesterday(sign)),
         getSignTomorrowInfo: (sign) => dispatch(getSignTomorrow(sign)),
-        getSigns: () => dispatch(getAllSigns())
+        getSigns: () => dispatch(getAllSigns()),
+        deleteFavorite: (id) => dispatch(deleteFavoriteHoroscope(id))
     }
 }
 export default connect(msp, mdp)(Horoscope)

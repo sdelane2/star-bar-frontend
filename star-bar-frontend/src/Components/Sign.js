@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { getSignToday } from '../Redux/actions';
+import { getSignToday } from '../Containers/Redux/actions';
 import Horoscope from './Horoscope';
 import {Modal} from 'semantic-ui-react'
 

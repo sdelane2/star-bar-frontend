@@ -1,7 +1,7 @@
 import React from 'react'
 import Horoscope from '../Components/Horoscope.js'
 import {connect} from 'react-redux'
-import { deleteFavoriteHoroscope, getFavoriteHoroscopes } from '../Redux/actions.js'
+import { deleteFavoriteHoroscope, getFavoriteHoroscopes } from './Redux/actions.js'
 
 class FavoriteHoroscopeContainer extends React.Component   {
 
@@ -10,13 +10,13 @@ class FavoriteHoroscopeContainer extends React.Component   {
         this.props.getFavorites(this.props.user.id)
     }
 
-    deleteFavorite = (id) => {
-        this.props.deleteFavorite(id)
-    }
+    // deleteFavorite = (id) => {
+    //     this.props.deleteFavorite(id)
+    // }
 
 
     render() {
-        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
+        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id}/>)
         return (
             <>
             {favorites}
