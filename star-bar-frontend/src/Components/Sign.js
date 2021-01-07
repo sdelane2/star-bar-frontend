@@ -1,8 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { getSignToday } from '../Containers/Redux/actions';
+import { getSignToday } from '../Redux/actions';
 import Horoscope from './Horoscope';
-import {Modal} from 'semantic-ui-react'
+import {Modal, Segment} from 'semantic-ui-react'
 
 class Sign extends React.Component{
 
@@ -30,8 +30,10 @@ class Sign extends React.Component{
             <>
                 <div className="column" color="@primarycolor">
                 <Modal onOpen={this.toggleModal} onClose={this.toggleModal} trigger={<img style={{maxWidth: "500px", height: "100px"}} key={this.props.sign.id} alt={this.props.sign.name} src={this.props.sign.image} />}>
+                <Segment padded>
 
                 {this.renderHoroscope()}
+                </Segment>
 
                 </Modal>
                 </div>

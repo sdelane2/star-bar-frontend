@@ -1,7 +1,7 @@
 import React from 'react'
 import Horoscope from '../Components/Horoscope.js'
 import {connect} from 'react-redux'
-import { deleteFavoriteHoroscope, getFavoriteHoroscopes } from './Redux/actions.js'
+import { deleteFavoriteHoroscope, getFavoriteHoroscopes } from '../Redux/actions.js'
 
 class FavoriteHoroscopeContainer extends React.Component   {
 

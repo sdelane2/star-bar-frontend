@@ -7,6 +7,7 @@ import { findId, getAllHoroscopes, getAllSigns, saveHoroscope} from '../Redux/ac
 
 class HoroscopeContainer extends React.Component{
 
+
     componentDidMount(){
         if (this.props.user){
             this.props.getSigns()
