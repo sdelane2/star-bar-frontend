@@ -2,7 +2,7 @@ import React from 'react'
 import Sign from '../Components/Sign'
 import {connect} from 'react-redux'
 import {
-   Grid
+   Grid, Segment
   } from 'semantic-ui-react'
 
 class AllHoroscopesContainer extends React.Component{
@@ -14,9 +14,13 @@ class AllHoroscopesContainer extends React.Component{
 
     render(){
         return(
+            <>
+            <br></br>
+            <br></br>
             <div className='ui three column doubling stackable grid container'>
                 {this.renderSignPics()}
-            </div>    
+            </div> 
+            </>
         )
     }
 }

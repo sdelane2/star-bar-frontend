@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { getSignToday } from '../Redux/actions';
 import Horoscope from './Horoscope';
-import {Modal, Icon, Segment, ModalDescription} from 'semantic-ui-react'
+import {Modal} from 'semantic-ui-react'
 
 class Sign extends React.Component{
 

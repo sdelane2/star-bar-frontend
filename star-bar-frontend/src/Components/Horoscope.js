@@ -69,7 +69,9 @@ class Horoscope extends React.Component {
                         :
                     <Icon name={"favorite"} className={"favorite"} corner={"top right"} size={"large"} onClick={this.favoriteHoroscope} ></Icon> 
             : 
-            <button onClick={this.deleteClickHandler}>Delete this horoscope from favorites</button> 
+            
+            <Icon inverted aria-hidden={"false"} name={"trash alternate outline"} className={"favorite"} corner={"top right"} size={"large"} onClick={this.deleteClickHandler} ></Icon>
+            
             }
            
             <br></br>
@@ -87,11 +89,12 @@ class Horoscope extends React.Component {
             <p>Compatibility: {this.props.horoscope.compatibility}</p>
             <p>Mood: {this.props.horoscope.mood}</p>
             </div>
+            <br></br>
             </div>
             {this.props.container ?
                 <>
                     <Icon name={"caret left"} size={"big"} onClick={this.yesterdayClickHandler}></Icon>
-                    <Icon name={"caret down"} size={"big"} onClick={this.todayClickHandler}></Icon>
+                    <Icon name={"genderless"} size={"big"} onClick={this.todayClickHandler}></Icon>
                     <Icon name={"caret right"} size={"big"} onClick={this.tomorrowClickHandler}></Icon><br></br>
                 </>
             :
