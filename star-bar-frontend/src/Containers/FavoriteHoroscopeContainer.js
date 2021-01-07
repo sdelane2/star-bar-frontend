@@ -10,13 +10,13 @@ class FavoriteHoroscopeContainer extends React.Component   {
         this.props.getFavorites(this.props.user.id)
     }
 
-    // deleteFavorite = (id) => {
-    //     this.props.deleteFavorite(id)
-    // }
+    deleteFavorite = (id) => {
+        this.props.deleteFavorite(id)
+    }
 
 
     render() {
-        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id}/>)
+        let favorites = this.props.favoriteHoroscopes.map(favorite => <Horoscope sign={favorite.sign} container={false} key={favorite.id} horoscope={favorite.horoscope} id={favorite.id} deleteFavorite={this.deleteFavorite}/>)
         return (
             <>
             {favorites}
