@@ -2,3 +2,4 @@
     User Variable Overrides
 *******************************/
 @background: rgba(0, 0, 0, 0.6);
+@boxRadius: 0.625rem;

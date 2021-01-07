@@ -13,6 +13,7 @@ class HoroscopeContainer extends React.Component{
         today: [],
         tomorrow: []
     }
+
     componentDidMount(){
         if (this.props.user){
             this.props.getSigns()
